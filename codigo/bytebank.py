@@ -26,9 +26,12 @@ class Funcionario:
         nome_quebrado = nome_completo.split(" ")
         return nome_quebrado[-1]
 
-    def decrementar_salario(self):
+    def _verifica_socio(self):
         sobrenomes_diretores = ['Bragança', 'Carvalho', 'Silva']
-        if self._salario >= 100000 and (self.sobrenome() in sobrenomes_diretores):
+        return self._salario >= 100000 and (self.sobrenome() in sobrenomes_diretores)
+
+    def decrementar_salario(self):
+        if self._verifica_socio():
             decrescimo = self._salario * 0.1
             self._salario -= decrescimo
         return self._salario
