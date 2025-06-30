@@ -3,10 +3,10 @@ from codigo.bytebank import Funcionario
 class TestClass:
     def test_quando_idade_recebe_13_03_2020_deve_retornar_25(self):
         # Given-Contexto
-        entrada = "13/03/2000"
+        entrada_data_nascimento = "13/03/2000"
         esperado = 25
-        
-        funcionario_teste = Funcionario("Teste", entrada, 1111)
+
+        funcionario_teste = Funcionario("Teste", entrada_data_nascimento, 1111)
         # When-Ação
         resultado = funcionario_teste.idade()
 
@@ -15,10 +15,10 @@ class TestClass:
 
     def test_quando_sobrenome_recebe_lucas_carvalho_deve_retornar_apenas_carvalho(self):
         # Given-Contexto
-        entrada = " Lucas Carvalho "
+        entrada_nome = " Lucas Carvalho "
         esperado = "Carvalho"
 
-        lucas = Funcionario(entrada, "11/11/2000", 1111)
+        lucas = Funcionario(entrada_nome, "11/11/2000", 1111)
         # When-Ação
         resultado = lucas.sobrenome()
 
@@ -37,3 +37,12 @@ class TestClass:
         resultado = funcionario_teste.salario
 
         assert resultado == esperado # Then-desfecho
+
+    def test_quando_calcular_bonus_recebe_1000_deve_retornar_100(self):
+        entrada_salario = 1000 # given-contexto
+        esperado = 100
+
+        funcionario_teste = Funcionario("teste", "11/11/2000", entrada_salario)
+        resultado = funcionario_teste.calcular_bonus() # when-ação
+
+        assert resultado == esperado # then-verificação
