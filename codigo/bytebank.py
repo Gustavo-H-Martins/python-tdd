@@ -15,21 +15,30 @@ class Funcionario:
         return self._salario
 
     def idade(self):
-        data_nasciemnto_quebrada = self._data_nascimento.split('/')
-        ano_nascimento = data_nasciemnto_quebrada[-1]
+        data_nascimento_quebrada = self._data_nascimento.split('/')
+        ano_nascimento = int(data_nascimento_quebrada[-1])
         ano_atual = date.today().year
+
         return ano_atual - int(ano_nascimento)
 
     def sobrenome(self):
-        nome_completo = self.nome.strip()
-        nome_quebrado = nome_completo.split(' ')
+        nome_completo = self._nome.strip()
+        nome_quebrado = nome_completo.split(" ")
         return nome_quebrado[-1]
+
+    def decrementar_salario(self):
+        sobrenomes_diretores = ['Bragança', 'Carvalho', 'Silva']
+        if self._salario >= 100000 and (self.sobrenome() in sobrenomes_diretores):
+            decrescimo = self._salario * 0.1
+            self._salario -= decrescimo
+        return self._salario
 
     def calcular_bonus(self):
         valor = self._salario * 0.1
         if valor > 1000:
             valor = 0
         return valor
+
 
     def __str__(self):
         return f'Funcionario({self._nome}, {self._data_nascimento}, {self._salario})'
