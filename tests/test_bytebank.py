@@ -56,3 +56,12 @@ class TestClass:
 
             funcionario_teste = Funcionario("teste", "11/11/2000", entrada_salario) # when-ação
             assert funcionario_teste.calcular_bonus() # then-verificação
+
+    def test_quando_retornar_str_deve_retornar_nome_completo(self):
+        entrada_nome, entrada_data_nascimento, entrada_salario = "Teste", "11/11/2000", 1111 # Given-Contexto
+        esperado = "Funcionario(Teste, 11/11/2000, 1111)"
+
+        funcionario_teste = Funcionario(entrada_nome, entrada_data_nascimento, entrada_salario)
+        resultado = funcionario_teste.__str__() # When-Ação
+
+        assert resultado == esperado # Then-Verificação

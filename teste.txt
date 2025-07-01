@@ -1,0 +1,37 @@
+create cluster
+
+-----
+
+aws kafka create-cluster   --cluster-name msk-sensedia-test-current-account   --broker-node-group-info file://scripts/broker-node-group.json   --kafka-version 3.5.1   --number-of-broker-nodes 2   --enhanced-monitoring PER_TOPIC_PER_PARTITION   --encryption-info file://scripts/encryption-info.json   --region us-east-1
+
+create topic
+
+-----
+
+kafka_2.12-3.9.1/bin/kafka-topics.sh   --create   --topic sensedia-optl-analytics   --bootstrap-server b-1.msksensediatest.0tf0x6.c9.kafka.us-east-1.amazonaws.com:9092,b-2.msksensediatest.0tf0x6.c9.kafka.us-east-1.amazonaws.com:9092 --replication-factor 2 --partitions 2
+
+create connector
+
+-----
+
+aws kafkaconnect create-connector --connector-name s3-sink-test-current-account --capacity '{"autoScaling": {"maxWorkerCount": 2, "mcuCount": 1, "minWorkerCount": 1}}' --kafka-cluster '{
+    "apacheKafkaCluster": {
+      "bootstrapServers": "b-1.msksensediatest.0tf0x6.c9.kafka.us-east-1.amazonaws.com:9092,b-2.msksensediatest.0tf0x6.c9.kafka.us-east-1.amazonaws.com:9092",
+      "vpc": {
+        "subnets": ["subnet-0e9d3ebc7ba09da23", "subnet-08ccde50fc29aac95"],
+        "securityGroups": ["sg-0629d51c362ef5235", "sg-04e5cd0c6a91da9a8"]
+      }
+    }
+  }' --kafka-cluster-client-authentication '{"authenticationType": "NONE"}' --kafka-cluster-encryption-in-transit '{"encryptionType": "PLAINTEXT"}' --kafka-connect-version "3.7.x" --connector-configuration file://scripts/connector-config.json --service-execution-role arn:aws:iam::343218206630:role/msk-connect-role --plugins '[{
+    "customPlugin": {
+      "customPluginArn": "arn:aws:kafkaconnect:us-east-1:343218206630:custom-plugin/sensedia-msk-connect-plugin-optl-analytics/61c302c7-d0d9-45c7-b4ff-ff520ed41edf-3",
+      "revision": 1
+    }
+  }]'
+
+
+{
+    "connectorArn": "arn:aws:kafkaconnect:us-east-1:343218206630:connector/s3-sink-test-current-account/89b63b87-0b58-410c-b264-d4d2bf4daf38-3",
+    "connectorName": "s3-sink-test-current-account",
+    "connectorState": "CREATING"
+}

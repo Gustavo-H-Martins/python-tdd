@@ -1,0 +1,6 @@
+[run]
+
+[report]
+exclude_lines = 
+	def nome
+    def __str__
